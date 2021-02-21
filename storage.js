@@ -18,7 +18,18 @@ export const Storage = {
   post: set,
   put: merge,
   remove: remove,
+  getAllKeys: getAllKeys,
+  clear: clear,
 };
+
+async function clear() {
+  try {
+    await AsyncStorage.clear();
+  } catch (error) {
+    console.error("Couldn't clear?", e);
+  }
+  console.log("cleared out?");
+}
 
 async function remove(value) {
   try {
@@ -51,6 +62,21 @@ async function set(key, value) {
     console.warn(e);
     return false;
   }
+}
+async function getAllKeys(keyword) {
+  let keys = [];
+  try {
+    keys = await AsyncStorage.getAllKeys();
+
+    console.log("All keys: ", keys);
+    if (keyword) {
+      keys = keys.filter((key) => key.includes(keyword));
+    }
+  } catch (e) {
+    console.warn("Error in getting keys:", e);
+  }
+
+  console.log("Returning keys: ", keys);
 }
 
 async function get(key) {
